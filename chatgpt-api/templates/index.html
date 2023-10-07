@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Jolly AI Chat Bot</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+  
+
+
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/lib/languages/python.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/a11y-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+
+<body>
+  <!-- <div class="return-home" href="">Home</div> -->
+
+
+  <div class="container mt-5">
+    <h1 style="color:white">Jolly AI Chat Bot</h1>
+    <div class="chat-box mt-3">
+      <!-- Chat messages will be added here dynamically -->
+    </div>
+    <div class="form-group mt-3">
+      <textarea class="form-control" rows="3" placeholder="Type your message here" id="message-input"></textarea>
+    </div>
+    <button type="button" class="btn btn-primary" id="send-btn">SEND</button>
+  </div>
+  <script>
+    
+setInterval(highlightAll,1000);
+// Function to highlight code using highlight.js library
+function highlightAll() {
+  document.querySelectorAll("pre code").forEach(block => {
+    hljs.highlightBlock(block);
+  });
+}
+
+
+
+
+
+// NEW CODE BL
+
+    const chatBox = document.querySelector(".chat-box");
+    const messageInput = document.querySelector("#message-input");
+    const sendBtn = document.querySelector("#send-btn");
+// Function to scroll to the bottom of the chat box
+function scrollToBottom() {
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Function to add user and bot messages to the chat
+function addMessage(message, isUserMessage) {
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("message", isUserMessage ? "user-message" : "bot-message");
+
+  const messageContent = document.createElement("p");
+  messageContent.textContent = message;
+
+  const messageIcon = document.createElement("img");
+  messageIcon.src = isUserMessage ? "{{ url_for('static', filename='images/user.png') }}" : "{{ url_for('static', filename='images/gpt.jpg') }}";
+  messageIcon.classList.add("message-icon");
+
+  messageDiv.appendChild(messageIcon);
+  messageDiv.appendChild(messageContent);
+
+  chatBox.appendChild(messageDiv);
+  scrollToBottom();
+}
+
+// Function to handle sending a user message
+function sendMessage() {
+  const message = messageInput.value.trim();
+
+  if (message !== "") {
+    addMessage(message, true);
+
+    fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        messageInput.value = "";
+
+        const botResponse = data.content;
+
+        // Check if the bot response contains code blocks
+        const codeBlocks = botResponse.match(/```[\s\S]+?```/g);
+
+        if (codeBlocks) {
+          // If there are code blocks, handle them
+          const messages = botResponse.split(/```[\s\S]+?```/g);
+
+          messages.forEach((message, index) => {
+            addMessage(message, false);
+
+            if (index < codeBlocks.length) {
+              // Display code blocks in a <pre><code> element
+              const codeBlock = document.createElement("pre");
+              codeBlock.classList.add("code-block");
+              codeBlock.textContent = codeBlocks[index].replace(/```/g, "");
+
+              chatBox.appendChild(codeBlock);
+            }
+          });
+        } else {
+          // No code blocks in the response, display as a regular message
+          addMessage(botResponse, false);
+        }
+      })
+      .catch((error) => console.error(error));
+  }
+}
+
+// Event listeners for sending messages
+sendBtn.addEventListener("click", sendMessage);
+messageInput.addEventListener("keydown", (event) => {
+  if (event.keyCode === 13 && !event.shiftKey) {
+    event.preventDefault();
+    sendMessage();
+  }
+});
+
+
+ 
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Button Click Navigation</title>
+    <!-- Include Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Add custom styles here */
+        body {
+            padding: 20px;
+        }
+
+        /* Center the buttons and text */
+        .center-content {
+            text-align: center;
+        }
+
+        /* Add spacing between buttons and text */
+        .content {
+            margin-top: 20px;
+        }
+    </style>
+
+<style>
+    /* Background image */
+    body {
+        background-image: url('sunset.jpg'); /* Add your background image here */
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Form container */
+    .container {
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        padding: 30px;
+        margin-top: 50px;
+    }
+
+    /* Registration form styles */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    /* Nature image */
+    .nature-image {
+        max-width: 100%;
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Left button for Individual Purpose -->
+                <button class="btn btn-primary btn-block" onclick="openIndividualPage()">Individual Purpose</button>
+                <div class="content">
+                    <p>  <b>Non-disclosure agreement </b> enables you to protect your data while sharing it with other parties. 
+                       <br> <br>
+                    <b> Straight-forward work-for-hire agreement </b> is a useful legal document for any work you’re receiving or providing.
+                    <br> <br>
+                   <b>  Referral agreement </b>  template enables you to pay a commission to a third party every time they generate a sale for your business.
+                <br> <br>
+                <b> property management agreement </b>
+                 you can quickly set up the exclusive rights of a piece of property, its entrusted agent, and the payment terms between the parties</p>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Right button for Business Purpose -->
+                <button class="btn btn-success btn-block" onclick="openBusinessPage()">Business Purpose</button>
+                <div class="content">
+                    <p>  <b> A shareholder agreement</b> is a legal document that is made between the company and the shareholders. <br> <br>
+                      <b>  A Founders’ Agreement </b> is an official contract that is signed between all the co-founders of the firm. <br> <br>
+                      <b>  A Certificate of Incorporation</b>
+                        is the legal document that makes the company formation valid or brings the company into existence
+
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript functions to open new pages -->
+    <script>
+    function openIndividualPage() {
+        window.location.href = 'individual.html';
+    }
+
+    function openBusinessPage() {
+        window.location.href = 'business.html';
+    }
+    </script>
+
+    <!-- Include Bootstrap JS and jQuery links -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
